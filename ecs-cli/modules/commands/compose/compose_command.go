@@ -63,6 +63,7 @@ func ComposeCommand(factory composeFactory.ProjectFactory) cli.Command {
 			startCommand(factory),
 			stopCommand(factory),
 			upCommand(factory),
+			scheduleCommand(factory),
 			// ----- Unsupported/Unimplemented COMMANDS -----
 			// build, pull, logs, port, restart, rm, kill
 
@@ -178,6 +179,19 @@ func scaleCommand(factory composeFactory.ProjectFactory) cli.Command {
 		Name:   "scale",
 		Usage:  "ecs-cli compose scale [count] - scales the number of running tasks to the specified count.",
 		Action: compose.WithProject(factory, compose.ProjectScale, false),
+		Flags: []cli.Flag{
+			command.OptionalClusterFlag(),
+			command.OptionalRegionFlag(),
+		},
+	}
+}
+
+func scheduleCommand(factory composeFactory.ProjectFactory) cli.Command {
+	return cli.Command{
+		Name:      "schedule",
+		Usage:     "Creates or updates an ECS task definition and a scheduled task from your compose file.",
+		ArgsUsage: "[SCHEDULE_EXPRESSION] [CONTAINER_NAME] [\"COMMAND ...\"] [CONTAINER_NAME] [\"COMMAND ...\"] ...",
+		Action:    compose.WithProject(factory, compose.ProjectSchedule, false),
 		Flags: []cli.Flag{
 			command.OptionalClusterFlag(),
 			command.OptionalRegionFlag(),

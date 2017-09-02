@@ -17,6 +17,8 @@ import (
 	"os"
 	"strconv"
 
+	"encoding/json"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/aws/amazon-ecs-cli/ecs-cli/modules/cli/compose/container"
 	composeFactory "github.com/aws/amazon-ecs-cli/ecs-cli/modules/cli/compose/factory"
@@ -107,6 +109,51 @@ func ProjectRun(p ecscompose.Project, c *cli.Context) {
 		commandOverrides[args[i]] = parts
 	}
 	err := p.Run(commandOverrides)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+// ProjectSchedule creates or updates an ECS task definition and a scheduled task
+func ProjectSchedule(p ecscompose.Project, c *cli.Context) {
+	args := c.Args()
+	if len(args) < 3 {
+		log.Fatal("Too few arguments. Please pass arguments in the form: SCHEDULE_EXPRESSION CONTAINER \"COMMAND ...\" [CONTAINER \"COMMAND...\"] ...")
+	}
+	expression := args[0]
+	commandArgs := args[1:]
+	if len(commandArgs)%2 != 0 {
+		log.Fatal("Please pass arguments in the form: SCHEDULE_EXPRESSION CONTAINER \"COMMAND ...\" [CONTAINER \"COMMAND...\"] ...")
+	}
+
+	type containerOverride struct {
+		Name    string   `json:"name"`
+		Command []string `json:"command"`
+	}
+	input := struct {
+		ContainerOverrides []*containerOverride `json:"containerOverrides"`
+	}{}
+
+	for i := 0; i < len(commandArgs); i += 2 {
+		parts, err := shlex.Split(commandArgs[i+1])
+		if err != nil {
+			log.WithFields(log.Fields{
+				"schedule-expression": expression,
+				"container-name":      commandArgs[i],
+				"error":               err,
+			}).Fatal("Unable to parse schedule commands")
+		}
+		input.ContainerOverrides = append(input.ContainerOverrides, &containerOverride{
+			Name:    commandArgs[i],
+			Command: parts,
+		})
+	}
+
+	inputStr, err := json.Marshal(input)
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = p.Schedule(expression, string(inputStr))
 	if err != nil {
 		log.Fatal(err)
 	}

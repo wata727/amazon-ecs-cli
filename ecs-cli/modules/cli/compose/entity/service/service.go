@@ -316,6 +316,11 @@ func (s *Service) Run(commandOverrides map[string][]string) error {
 	return composeutils.ErrUnsupported
 }
 
+// Schedule command is not supported in context of ECS Services
+func (s *Service) Schedule(expression string, input string) error {
+	return composeutils.ErrUnsupported
+}
+
 // EntityType returns service as the type
 func (s *Service) EntityType() types.Type {
 	return types.Service

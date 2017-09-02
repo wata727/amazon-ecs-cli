@@ -20,10 +20,10 @@ import (
 	"github.com/aws/amazon-ecs-cli/ecs-cli/modules/cli/compose/entity/service"
 	"github.com/aws/amazon-ecs-cli/ecs-cli/modules/cli/compose/entity/task"
 
+	"github.com/aws/amazon-ecs-cli/ecs-cli/modules/commands"
 	"github.com/aws/amazon-ecs-cli/ecs-cli/modules/utils/compose"
 	"github.com/docker/libcompose/config"
 	"github.com/docker/libcompose/project"
-	"github.com/aws/amazon-ecs-cli/ecs-cli/modules/commands"
 )
 
 // Project is the starting point for the compose app to interact with and issue commands
@@ -42,6 +42,7 @@ type Project interface {
 	Up() error
 	Info() (project.InfoSet, error)
 	Run(commandOverrides map[string][]string) error
+	Schedule(expression string, input string) error
 	Scale(count int) error
 	Stop() error
 	Down() error
@@ -164,6 +165,10 @@ func (p *ecsProject) Info() (project.InfoSet, error) {
 
 func (p *ecsProject) Run(commandOverrides map[string][]string) error {
 	return p.entity.Run(commandOverrides)
+}
+
+func (p *ecsProject) Schedule(expression string, input string) error {
+	return p.entity.Schedule(expression, input)
 }
 
 func (p *ecsProject) Scale(count int) error {

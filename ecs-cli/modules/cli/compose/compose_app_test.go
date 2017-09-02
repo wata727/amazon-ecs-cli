@@ -79,3 +79,24 @@ func TestScale(t *testing.T) {
 
 	ProjectScale(mockProject, cliContext)
 }
+
+func TestSchedule(t *testing.T) {
+	expression := "cron(0 18 * * ? *)"
+	containers := []string{"cont1", "cont2"}
+	commands := []string{"cmd1 cmd2", "cmd3"}
+
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+	mockProject := mock_project.NewMockProject(ctrl)
+	mockProject.EXPECT().Schedule(
+		"cron(0 18 * * ? *)",
+		"{\"containerOverrides\":[{\"name\":\"cont1\",\"command\":[\"cmd1\",\"cmd2\"]},{\"name\":\"cont2\",\"command\":[\"cmd3\"]}]}",
+	).Return(nil)
+
+	flagSet := flag.NewFlagSet("ecs-cli", 0)
+	cliContext := cli.NewContext(nil, flagSet, nil)
+	// flag with expression, 2 containers and 2 commands
+	flagSet.Parse([]string{expression, containers[0], commands[0], containers[1], commands[1]})
+
+	ProjectSchedule(mockProject, cliContext)
+}

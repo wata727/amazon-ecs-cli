@@ -128,6 +128,16 @@ func (_mr *_MockProjectEntityRecorder) Scale(arg0 interface{}) *gomock.Call {
 	return _mr.mock.ctrl.RecordCall(_mr.mock, "Scale", arg0)
 }
 
+func (_m *MockProjectEntity) Schedule(_param0 string, _param1 string) error {
+	ret := _m.ctrl.Call(_m, "Schedule", _param0, _param1)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+func (_mr *_MockProjectEntityRecorder) Schedule(arg0, arg1 interface{}) *gomock.Call {
+	return _mr.mock.ctrl.RecordCall(_mr.mock, "Schedule", arg0, arg1)
+}
+
 func (_m *MockProjectEntity) SetTaskDefinition(_param0 *ecs.TaskDefinition) {
 	_m.ctrl.Call(_m, "SetTaskDefinition", _param0)
 }

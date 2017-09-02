@@ -261,3 +261,9 @@ func TestServiceRun(t *testing.T) {
 	err := service.Run(map[string][]string{})
 	assert.Error(t, err, "Expected unsupported error")
 }
+
+func TestServiceSchedule(t *testing.T) {
+	service := NewService(&context.Context{})
+	err := service.Schedule("cron(0 18 * * ? *)", "")
+	assert.Error(t, err, "Expected unsupported error")
+}

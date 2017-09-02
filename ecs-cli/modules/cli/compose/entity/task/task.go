@@ -178,6 +178,13 @@ func (t *Task) Run(commandOverrides map[string][]string) error {
 	return t.waitForRunTasks(ecsTasks.Tasks)
 }
 
+// Creates or updates the scheduled task.
+// Since the scheduled task is implemented by CloudWatch Events, we use the CloudWatch Events API.
+func (t *Task) Schedule(expression string, input string) error {
+	// TODO
+	return nil
+}
+
 // Stop gets all the running tasks and issues ECS StopTask command to them
 // and waits until they stop
 func (t *Task) Stop() error {

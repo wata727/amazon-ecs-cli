@@ -30,6 +30,7 @@ type ProjectEntity interface {
 	Up() error
 	Info(filterComposeTasks bool) (project.InfoSet, error)
 	Run(commandOverrides map[string][]string) error
+	Schedule(expression string, input string) error
 	Scale(count int) error
 	Stop() error
 	Down() error
