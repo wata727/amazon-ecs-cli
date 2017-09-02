@@ -105,6 +105,11 @@
 			"Rev": "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
 		},
 		{
+			"ImportPath": "github.com/aws/aws-sdk-go/internal/shareddefaults",
+			"Comment": "v1.10.37",
+			"Rev": "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
+		},
+		{
 			"ImportPath": "github.com/aws/aws-sdk-go/private/protocol",
 			"Comment": "v1.10.37",
 			"Rev": "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
@@ -151,6 +156,16 @@
 		},
 		{
 			"ImportPath": "github.com/aws/aws-sdk-go/service/cloudformation/cloudformationiface",
+			"Comment": "v1.10.37",
+			"Rev": "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/service/cloudwatchevents",
+			"Comment": "v1.10.37",
+			"Rev": "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
+		},
+		{
+			"ImportPath": "github.com/aws/aws-sdk-go/service/cloudwatchevents/cloudwatcheventsiface",
 			"Comment": "v1.10.37",
 			"Rev": "2dd0010a66ff968eb03c2507cfb5deab080c5d93"
 		},
